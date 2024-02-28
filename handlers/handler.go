@@ -36,7 +36,7 @@ func NewHandler() IHandler {
 			CSSFiles:     m.CSS,
 			JSFile:       m.File,
 			IsProduction: isProd,
-			Title:        "app",
+			Title:        viper.GetString(config.AppName),
 			ShowNav:      true,
 		},
 	}
