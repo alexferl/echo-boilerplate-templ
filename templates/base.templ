@@ -1,0 +1,51 @@
+package templates
+
+import "fmt"
+
+var dist = "/static/dist/%s"
+
+templ head(s Settings) {
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{ s.Title }</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo="/>
+    if !s.IsProduction {
+      <link href="http://localhost:5173/static/src/styles.css" rel="stylesheet"/>
+    } else {
+      for _, file := range s.CSSFiles {
+        <link href={ fmt.Sprintf(dist, file) } rel="stylesheet"/>
+        }
+    }
+    <script>
+      if (localStorage.getItem("color-theme") === "dark" || (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark")
+      }
+    </script>
+  </head>
+}
+
+templ Base(s Settings, body templ.Component) {
+  <!DOCTYPE html>
+  <html lang="en">
+  @head(s)
+  <body class="subpixel-antialiased bg-gray-white dark:bg-gray-900 dark:text-white">
+  <div class="flex flex-col min-h-screen">
+    if s.ShowNav {
+      @nav(s)
+    }
+    <main>
+      @body
+    </main>
+  </div>
+  if !s.IsProduction {
+    <script type="module" src="http://localhost:5173/@vite/client"></script>
+    <script type="module" src="http://localhost:5173/static/src/main.js"></script>
+  } else {
+    <script type="module" src={ fmt.Sprintf(dist, s.JSFile) }></script>
+  }
+  </body>
+  </html>
+}

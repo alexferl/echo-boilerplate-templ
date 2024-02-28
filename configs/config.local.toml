@@ -1,0 +1,3 @@
+env-name = "local"
+log-level = "DEBUG"
+http-bind-port = 3000

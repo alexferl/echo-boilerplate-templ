@@ -1,0 +1,4 @@
+env-name = "prod"
+log-writer = "json"
+http-bind-address = "0.0.0.0"
+http-bind-port = 3000
