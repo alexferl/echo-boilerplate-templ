@@ -10,11 +10,15 @@ import "context"
 import "io"
 import "bytes"
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/alexferl/echo-boilerplate-templ/models"
+)
 
 var dist = "/static/dist/%s"
 
-func head(s Settings) templ.Component {
+func head(s models.Settings) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -27,14 +31,14 @@ func head(s Settings) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<head data-testid=\"head\"><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(s.Title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/base.templ`, Line: 10, Col: 20}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/base.templ`, Line: 14, Col: 20}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -45,7 +49,7 @@ func head(s Settings) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if !s.IsProduction {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<link href=\"http://localhost:5173/static/src/styles.css\" rel=\"stylesheet\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<link href=\"http://localhost:5173/static/src/styles.css\" rel=\"stylesheet\" data-testid=\"css-nonprod\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -76,7 +80,7 @@ func head(s Settings) templ.Component {
 	})
 }
 
-func Base(s Settings, body templ.Component) templ.Component {
+func Base(s models.Settings, body templ.Component) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -97,7 +101,7 @@ func Base(s Settings, body templ.Component) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<body class=\"subpixel-antialiased bg-gray-white dark:bg-gray-900 dark:text-white\"><div class=\"flex flex-col min-h-screen\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<body class=\"subpixel-antialiased bg-gray-white dark:bg-gray-900 dark:text-white\" data-testid=\"body\"><div class=\"flex flex-col min-h-screen\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -120,7 +124,7 @@ func Base(s Settings, body templ.Component) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if !s.IsProduction {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script type=\"module\" src=\"http://localhost:5173/@vite/client\"></script> <script type=\"module\" src=\"http://localhost:5173/static/src/main.js\"></script>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script type=\"module\" src=\"http://localhost:5173/@vite/client\"></script> <script type=\"module\" src=\"http://localhost:5173/static/src/main.js\" data-testid=\"js-nonprod\"></script>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

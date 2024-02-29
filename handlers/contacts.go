@@ -7,6 +7,7 @@ import (
 	"github.com/angelofallars/htmx-go"
 	"github.com/labstack/echo/v4"
 
+	"github.com/alexferl/echo-boilerplate-templ/models"
 	"github.com/alexferl/echo-boilerplate-templ/templates"
 	"github.com/alexferl/echo-boilerplate-templ/templates/contacts"
 )
@@ -18,10 +19,10 @@ func (h *Handler) Contacts(c echo.Context) error {
 		time.Sleep(time.Millisecond * 500) // to see the loading icon
 		page := c.QueryParam("page")
 		num, _ := strconv.Atoi(page)
-		cs := contacts.NewContacts(num*10+1, num*10+10)
+		cs := models.NewContacts(num*10+1, num*10+10)
 		return h.HTMX(h.NewHTMXResponse()).Render(c, contacts.Rows(num+1, cs))
 	}
 
-	cs := contacts.NewContacts(1, 10)
+	cs := models.NewContacts(1, 10)
 	return h.Render(c, templates.Base(h.Settings, contacts.Table(cs)))
 }

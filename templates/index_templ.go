@@ -23,7 +23,7 @@ func Index(msg string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<section class=\"py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-12\"><h1 class=\"text-5xl font-extrabold\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<section class=\"py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-12\" data-testid=\"index\"><h1 class=\"text-5xl font-extrabold\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

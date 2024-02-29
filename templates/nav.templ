@@ -1,11 +1,15 @@
 package templates
 
-templ nav(s Settings) {
-  <nav class="bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+import (
+  "github.com/alexferl/echo-boilerplate-templ/models"
+)
+
+templ nav(s models.Settings) {
+  <nav class="bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700" data-testid="nav">
     <div class="flex flex-wrap items-center justify-between mx-auto p-4">
       <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
         <img src="/static/images/logo.svg" class="h-8" alt="Flowbite Logo" />
-        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
+        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">{ s.Title }</span>
       </a>
       <div class="flex items-center md:order-2 space-x-3 md:space-x-1.5 rtl:space-x-reverse">
         <!-- Theme button -->
@@ -70,8 +74,7 @@ templ nav(s Settings) {
             document.documentElement.classList.remove("dark");
             localStorage.setItem("color-theme", "light");
           }
-
-          // if NOT set via local storage previously
+        // if NOT set via local storage previously
         } else {
           if (document.documentElement.classList.contains("dark")) {
             document.documentElement.classList.remove("dark");

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"os"
 	"strings"
@@ -14,25 +15,22 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/alexferl/echo-boilerplate-templ/config"
+	"github.com/alexferl/echo-boilerplate-templ/models"
 	"github.com/alexferl/echo-boilerplate-templ/templates"
 )
 
-type IHandler interface {
-	AddRoutes(s *server.Server)
-}
-
 type Handler struct {
-	Settings templates.Settings
+	Settings models.Settings
 }
 
-func NewHandler() IHandler {
+func NewHandler() Handler {
 	isProd := strings.ToLower(viper.GetString(config.EnvName)) == "prod"
 	var m manifest
 	if isProd {
 		m = loadManifest()
 	}
-	return &Handler{
-		templates.Settings{
+	return Handler{
+		models.Settings{
 			CSSFiles:     m.CSS,
 			JSFile:       m.File,
 			IsProduction: isProd,
@@ -51,6 +49,24 @@ func (h *Handler) Render(ctx echo.Context, t templ.Component) error {
 	ctx.Response().Writer.WriteHeader(http.StatusOK)
 	ctx.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
 	return t.Render(ctx.Request().Context(), ctx.Response().Writer)
+}
+
+func (h *Handler) HTTPError(err error, c echo.Context) {
+	code := http.StatusInternalServerError
+	var he *echo.HTTPError
+	if errors.As(err, &he) {
+		code = he.Code
+	}
+
+	e, ok := models.HTTPErrorMessages[code]
+	if !ok {
+		e = models.HTTPErrorMessages[http.StatusInternalServerError]
+	}
+
+	h.Settings.Title = e.Title
+	if err := h.Render(c, templates.Base(h.Settings, templates.Error(e))); err != nil {
+		log.Error().Err(err).Send()
+	}
 }
 
 func (h *Handler) NewHTMXResponse() htmx.Response {

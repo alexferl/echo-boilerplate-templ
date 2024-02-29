@@ -5,6 +5,7 @@ go 1.21.4
 toolchain go1.21.7
 
 require (
+	github.com/PuerkitoBio/goquery v1.8.1
 	github.com/a-h/templ v0.2.543
 	github.com/alexferl/golib/config v0.0.0-20240228040247-93f62184757c
 	github.com/alexferl/golib/http/api v0.0.0-20240228040247-93f62184757c
@@ -19,6 +20,7 @@ require (
 )
 
 require (
+	github.com/andybalholm/cascadia v1.3.1 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect

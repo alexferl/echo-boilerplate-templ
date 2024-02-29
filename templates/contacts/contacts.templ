@@ -1,9 +1,13 @@
 package contacts
 
-import "fmt"
+import (
+  "fmt"
 
-templ Table(contacts Contacts) {
-  <section class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-12">
+  "github.com/alexferl/echo-boilerplate-templ/models"
+)
+
+templ Table(contacts models.Contacts) {
+  <section class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-12" data-testid="contacts">
     <div class="relative overflow-x-auto">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -27,7 +31,7 @@ templ Table(contacts Contacts) {
   </section>
 }
 
-templ Rows(page int, contacts Contacts) {
+templ Rows(page int, contacts models.Contacts) {
   for _, contact := range contacts {
     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
       <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -41,7 +45,7 @@ templ Rows(page int, contacts Contacts) {
       </td>
     </tr>
   }
-  <tr id="replaceMe">
+  <tr id="replaceMe" data-testid="contacts-row">
     <td colspan="3">
       <button x-data="{ 'isSubmitted': false }" @click="isSubmitted = ! isSubmitted" hx-get={ fmt.Sprintf("/contacts?page=%d", page) } hx-target="#replaceMe" hx-swap="outerHTML" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
         <svg :class="{ 'hidden': !isSubmitted, 'inline': isSubmitted }" aria-hidden="true" role="status" class="hidden w-4 h-4 text-white animate-spin htmx-indicator" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -1,17 +1,21 @@
 package templates
 
-import "fmt"
+import (
+  "fmt"
+
+  "github.com/alexferl/echo-boilerplate-templ/models"
+)
 
 var dist = "/static/dist/%s"
 
-templ head(s Settings) {
-  <head>
+templ head(s models.Settings) {
+  <head data-testid="head">
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>{ s.Title }</title>
     <link rel="icon" href="data:;base64,iVBORw0KGgo="/>
     if !s.IsProduction {
-      <link href="http://localhost:5173/static/src/styles.css" rel="stylesheet"/>
+      <link href="http://localhost:5173/static/src/styles.css" rel="stylesheet" data-testid="css-nonprod"/>
     } else {
       for _, file := range s.CSSFiles {
         <link href={ fmt.Sprintf(dist, file) } rel="stylesheet"/>
@@ -27,11 +31,11 @@ templ head(s Settings) {
   </head>
 }
 
-templ Base(s Settings, body templ.Component) {
+templ Base(s models.Settings, body templ.Component) {
   <!DOCTYPE html>
   <html lang="en">
   @head(s)
-  <body class="subpixel-antialiased bg-gray-white dark:bg-gray-900 dark:text-white">
+  <body class="subpixel-antialiased bg-gray-white dark:bg-gray-900 dark:text-white" data-testid="body">
   <div class="flex flex-col min-h-screen">
     if s.ShowNav {
       @nav(s)
@@ -42,7 +46,7 @@ templ Base(s Settings, body templ.Component) {
   </div>
   if !s.IsProduction {
     <script type="module" src="http://localhost:5173/@vite/client"></script>
-    <script type="module" src="http://localhost:5173/static/src/main.js"></script>
+    <script type="module" src="http://localhost:5173/static/src/main.js" data-testid="js-nonprod"></script>
   } else {
     <script type="module" src={ fmt.Sprintf(dist, s.JSFile) }></script>
   }

@@ -13,19 +13,16 @@ import (
 )
 
 func NewServer() *server.Server {
-	hs := []handlers.IHandler{
-		handlers.NewHandler(),
-	}
-	return newServer(hs...)
+	return newServer(handlers.NewHandler())
 }
 
-func NewTestServer(handler ...handlers.IHandler) *server.Server {
+func NewTestServer(handlers handlers.Handler) *server.Server {
 	c := config.New()
 	c.BindFlags()
-	return newServer(handler...)
+	return newServer(handlers)
 }
 
-func newServer(handlers ...handlers.IHandler) *server.Server {
+func newServer(handlers handlers.Handler) *server.Server {
 	s := server.New()
 
 	s.GET(
@@ -39,9 +36,9 @@ func newServer(handlers ...handlers.IHandler) *server.Server {
 		middleware.Cache("/static/images/", time.Hour*1),
 	)
 
-	for _, h := range handlers {
-		h.AddRoutes(s)
-	}
+	handlers.AddRoutes(s)
+
+	s.HTTPErrorHandler = handlers.HTTPError
 
 	return s
 }

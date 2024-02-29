@@ -1,4 +1,4 @@
-package templates
+package models
 
 type Settings struct {
 	CSSFiles     []string

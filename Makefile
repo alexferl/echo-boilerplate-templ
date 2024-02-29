@@ -52,13 +52,13 @@ vite:
 build: gen
 	go build -o app-bin ./cmd/app && npm run build
 
-test:
+test: gen
 	go test -v ./...
 
-cover:
+cover: gen
 	go test -cover -v ./...
 
-cover-html:
+cover-html: gen
 	go test -v -coverprofile=coverage.out ./...
 	go tool cover -html=coverage.out
 
