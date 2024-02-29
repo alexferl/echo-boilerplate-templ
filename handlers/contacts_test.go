@@ -25,3 +25,19 @@ func TestHandler_Contacts(t *testing.T) {
 	sel := doc.Find(`[data-testid="contacts"]`)
 	assert.True(t, sel.Length() > 0)
 }
+
+func TestHandler_Contacts_HTMX(t *testing.T) {
+	s := getServer(t)
+	req := httptest.NewRequest(http.MethodGet, "/contacts", nil)
+	req.Header.Set("HX-Request", "true")
+	resp := httptest.NewRecorder()
+
+	s.ServeHTTP(resp, req)
+
+	assert.Equal(t, http.StatusOK, resp.Code)
+	doc, err := goquery.NewDocumentFromReader(resp.Body)
+	assert.NoError(t, err)
+
+	sel := doc.Find(`[data-testid="contacts-row"]`)
+	assert.True(t, sel.Length() > 0)
+}

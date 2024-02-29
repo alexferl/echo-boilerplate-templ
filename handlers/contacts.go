@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"net/http"
 	"strconv"
 	"time"
 
@@ -24,5 +25,5 @@ func (h *Handler) Contacts(c echo.Context) error {
 	}
 
 	cs := models.NewContacts(1, 10)
-	return h.Render(c, templates.Base(h.Settings, contacts.Table(cs)))
+	return h.Render(c, http.StatusOK, templates.Base(h.Settings, contacts.Table(cs)))
 }

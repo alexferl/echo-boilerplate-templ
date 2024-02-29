@@ -24,3 +24,17 @@ func TestTable(t *testing.T) {
 	s := doc.Find(`[data-testid="contacts"]`)
 	assert.True(t, s.Length() > 0)
 }
+
+func TestRow(t *testing.T) {
+	cs := models.NewContacts(1, 10)
+	r, w := io.Pipe()
+	go func() {
+		Table(cs).Render(context.Background(), w)
+		w.Close()
+	}()
+	doc, err := goquery.NewDocumentFromReader(r)
+	assert.NoError(t, err)
+
+	s := doc.Find(`[data-testid="contacts-row"]`)
+	assert.True(t, s.Length() > 0)
+}

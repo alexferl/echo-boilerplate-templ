@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/a-h/templ"
@@ -25,9 +26,9 @@ type Handler struct {
 
 func NewHandler() Handler {
 	isProd := strings.ToLower(viper.GetString(config.EnvName)) == "prod"
-	var m manifest
+	var m Manifest
 	if isProd {
-		m = loadManifest()
+		m = LoadManifest("./static/dist/.vite/Manifest.json", "static/src/main.js")
 	}
 	return Handler{
 		models.Settings{
@@ -45,8 +46,8 @@ func (h *Handler) AddRoutes(s *server.Server) {
 	s.Add(http.MethodGet, "/contacts", h.Contacts)
 }
 
-func (h *Handler) Render(ctx echo.Context, t templ.Component) error {
-	ctx.Response().Writer.WriteHeader(http.StatusOK)
+func (h *Handler) Render(ctx echo.Context, statusCode int, t templ.Component) error {
+	ctx.Response().Writer.WriteHeader(statusCode)
 	ctx.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
 	return t.Render(ctx.Request().Context(), ctx.Response().Writer)
 }
@@ -60,11 +61,16 @@ func (h *Handler) HTTPError(err error, c echo.Context) {
 
 	e, ok := models.HTTPErrorMessages[code]
 	if !ok {
-		e = models.HTTPErrorMessages[http.StatusInternalServerError]
+		text := http.StatusText(code)
+		e = models.HTTPError{
+			Code:   strconv.Itoa(code),
+			Title:  text,
+			Header: text,
+		}
 	}
 
 	h.Settings.Title = e.Title
-	if err := h.Render(c, templates.Base(h.Settings, templates.Error(e))); err != nil {
+	if err := h.Render(c, code, templates.Base(h.Settings, templates.Error(e))); err != nil {
 		log.Error().Err(err).Send()
 	}
 }
@@ -89,15 +95,15 @@ func (h HTMX) Render(ctx echo.Context, c templ.Component) error {
 	return h.RenderTempl(ctx.Request().Context(), ctx.Response(), c)
 }
 
-type manifest struct {
+type Manifest struct {
 	File    string   `json:"file"`
 	Src     string   `json:"src"`
 	IsEntry bool     `json:"isEntry"`
 	CSS     []string `json:"css"`
 }
 
-func loadManifest() manifest {
-	plan, err := os.ReadFile("./static/dist/.vite/manifest.json")
+func LoadManifest(path string, mainFile string) Manifest {
+	plan, err := os.ReadFile(path)
 	if err != nil {
 		log.Panic().Err(err).Msg("failed reading manifest")
 	}
@@ -108,15 +114,15 @@ func loadManifest() manifest {
 		log.Panic().Err(err).Msg("failed unmarshalling manifest")
 	}
 
-	b, err := json.Marshal(data["static/src/main.js"])
+	b, err := json.Marshal(data[mainFile])
 	if err != nil {
 		log.Panic().Err(err).Msg("failed marshalling manifest file")
 	}
-	var f manifest
-	err = json.Unmarshal(b, &f)
+	var m Manifest
+	err = json.Unmarshal(b, &m)
 	if err != nil {
 		log.Panic().Err(err).Msg("failed unmarshalling manifest file")
 	}
 
-	return f
+	return m
 }
