@@ -27,6 +27,11 @@ help:
 	@echo "make docker-run"
 	@echo "	run docker image"
 
+check-air:
+ifeq (, $(shell which air))
+	$(error "air not in $(PATH), air (https://github.com/cosmtrek/air) is required")
+endif
+
 check-gofumpt:
 ifeq (, $(shell which gofumpt))
 	$(error "gofumpt not in $(PATH), gofumpt (https://pkg.go.dev/mvdan.cc/gofumpt) is required")
@@ -43,8 +48,8 @@ dev:
 gen: check-templ
 	templ generate
 
-run: gen
-	go build -o app-bin ./cmd/app && ./app-bin
+run: check-air
+	air
 
 vite:
 	npm run dev

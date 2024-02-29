@@ -12,6 +12,7 @@ A Go boilerplate for web development using:
 Before getting started, install the following:
 
 Required:
+- [Air](https://github.com/cosmtrek/air?tab=readme-ov-file#installation)
 - [Node.js](https://nodejs.org/en/download)
 - [templ](https://templ.guide/quick-start/installation)
 
