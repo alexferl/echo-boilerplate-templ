@@ -13,6 +13,6 @@
     "indentStyle": "space"
   },
   "files": {
-    "ignore": ["static/dist/*"]
+    "ignore": ["static/dist/*", "testing"]
   }
 }
