@@ -2,8 +2,8 @@ root = "."
 
 [build]
 args_bin = []
-bin = "./app-bin"
-cmd = "templ generate && go build -o app-bin ./cmd/app"
+bin = "./server-bin"
+cmd = "templ generate && go build -o server-bin ./cmd/server"
 delay = 1000
 exclude_dir = ["node_modules"]
 exclude_file = []

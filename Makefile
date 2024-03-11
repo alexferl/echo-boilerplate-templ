@@ -55,7 +55,7 @@ vite:
 	npm run dev
 
 build: gen
-	go build -o app-bin ./cmd/app && npm run build
+	go build -o server-bin ./cmd/server && npm run build
 
 test: gen
 	go test -v ./...
@@ -74,7 +74,7 @@ fmt: check-gofumpt
 	gofumpt -l -w .
 
 docker-build: build
-	docker build -t app .
+	docker build -t echo-boilerplate-templ .
 
 docker-run:
-	docker run -p 3000:3000 --rm app --env-name prod
+	docker run -p 3000:3000 --rm echo-boilerplate-templ --env-name prod

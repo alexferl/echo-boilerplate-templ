@@ -41,7 +41,7 @@ func NewHandler() Handler {
 	}
 }
 
-func (h *Handler) AddRoutes(s *server.Server) {
+func (h *Handler) Register(s *server.Server) {
 	s.Add(http.MethodGet, "/", h.Root)
 	s.Add(http.MethodGet, "/contacts", h.Contacts)
 }

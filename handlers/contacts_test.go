@@ -12,7 +12,7 @@ import (
 )
 
 func TestHandler_Contacts(t *testing.T) {
-	s := getServer(t)
+	s := getServer()
 	req := httptest.NewRequest(http.MethodGet, "/contacts", nil)
 	resp := httptest.NewRecorder()
 
@@ -27,7 +27,7 @@ func TestHandler_Contacts(t *testing.T) {
 }
 
 func TestHandler_Contacts_HTMX(t *testing.T) {
-	s := getServer(t)
+	s := getServer()
 	req := httptest.NewRequest(http.MethodGet, "/contacts", nil)
 	req.Header.Set("HX-Request", "true")
 	resp := httptest.NewRecorder()

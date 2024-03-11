@@ -15,7 +15,7 @@
 .idea
 
 # binary
-app-bin
+server-bin
 
 node_modules
 static/dist/.vite

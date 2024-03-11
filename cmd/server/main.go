@@ -15,7 +15,7 @@ func main() {
 	c := config.New()
 	c.BindFlags()
 
-	s := app.NewServer()
+	s := app.New()
 
 	log.Info().Msgf(
 		"Starting %s on %s environment listening at http://%s",

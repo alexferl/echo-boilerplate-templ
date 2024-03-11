@@ -1,6 +1,6 @@
 # echo-boilerplate-templ [![Go Report Card](https://goreportcard.com/badge/github.com/alexferl/echo-boilerplate-templ)](https://goreportcard.com/report/github.com/alexferl/echo-boilerplate-templ) [![codecov](https://codecov.io/gh/alexferl/echo-boilerplate-templ/branch/master/graph/badge.svg)](https://codecov.io/gh/alexferl/echo-boilerplate-templ)
 
-A Go boilerplate for web development using:
+A Go 1.22+ boilerplate for web development using:
 - [echo](https://github.com/labstack/echo)
 - [templ](https://templ.guide/)
 - [htmx](https://htmx.org/)

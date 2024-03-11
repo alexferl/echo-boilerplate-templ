@@ -12,7 +12,7 @@ import (
 )
 
 func TestHandler_Root(t *testing.T) {
-	s := getServer(t)
+	s := getServer()
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	resp := httptest.NewRecorder()
 

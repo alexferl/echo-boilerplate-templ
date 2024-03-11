@@ -1,4 +1,4 @@
-ARG GOLANG_VERSION=1.21-alpine
+ARG GOLANG_VERSION=1.22-alpine
 FROM golang:${GOLANG_VERSION} AS builder
 MAINTAINER Alexandre Ferland <me@alexferl.com>
 
@@ -12,13 +12,13 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 go build -ldflags="-w -s" ./cmd/app
+RUN CGO_ENABLED=0 go build -ldflags="-w -s" ./cmd/server
 
 FROM scratch
-COPY --from=builder /build/app /app
+COPY --from=builder /build/app /server
 COPY --from=builder /build/configs /configs
 COPY --from=builder /build/static/dist /static/dist
 
-ENTRYPOINT ["/app"]
+ENTRYPOINT ["/server"]
 
-EXPOSE 1323
+EXPOSE 3000

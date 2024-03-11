@@ -14,7 +14,7 @@ import (
 	"github.com/alexferl/echo-boilerplate-templ/handlers"
 )
 
-func NewServer() *server.Server {
+func New() *server.Server {
 	return newServer(handlers.NewHandler())
 }
 
@@ -43,7 +43,7 @@ func newServer(handlers handlers.Handler) *server.Server {
 		})
 	}
 
-	handlers.AddRoutes(s)
+	handlers.Register(s)
 
 	return s
 }

@@ -4,6 +4,8 @@ import (
 	"os"
 	"path"
 	"runtime"
+
+	"github.com/alexferl/echo-boilerplate-templ/config"
 )
 
 func init() {
@@ -13,4 +15,7 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+
+	c := config.New()
+	c.BindFlags()
 }
