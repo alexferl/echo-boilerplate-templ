@@ -7,15 +7,15 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 
-	app "github.com/alexferl/echo-boilerplate-templ"
 	"github.com/alexferl/echo-boilerplate-templ/config"
+	"github.com/alexferl/echo-boilerplate-templ/server"
 )
 
 func main() {
 	c := config.New()
 	c.BindFlags()
 
-	s := app.New()
+	s := server.New()
 
 	log.Info().Msgf(
 		"Starting %s on %s environment listening at http://%s",

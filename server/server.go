@@ -1,4 +1,4 @@
-package app
+package server
 
 import (
 	"net/http"
@@ -10,6 +10,7 @@ import (
 	"github.com/labstack/echo/v4"
 	_ "go.uber.org/automaxprocs"
 
+	app "github.com/alexferl/echo-boilerplate-templ"
 	"github.com/alexferl/echo-boilerplate-templ/config"
 	"github.com/alexferl/echo-boilerplate-templ/handlers"
 )
@@ -29,12 +30,12 @@ func newServer(handlers handlers.Handler) *server.Server {
 	s.HTTPErrorHandler = handlers.HTTPError
 	s.GET(
 		"/static/*",
-		handler.Static("/static/", StaticFS, "static"),
+		handler.Static("/static/", app.StaticFS, "static"),
 		middleware.Cache("/static/dist/assets/", time.Hour*24*7),
 	)
 	s.GET(
 		"/static/images/*",
-		handler.Static("/static/images/", StaticFS, "static/images"),
+		handler.Static("/static/images/", app.StaticFS, "static/images"),
 		middleware.Cache("/static/images/", time.Hour*1),
 	)
 	if handlers.Settings.IsProduction {

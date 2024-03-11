@@ -1,14 +1,14 @@
 package handlers_test
 
 import (
-	"github.com/alexferl/golib/http/api/server"
+	api "github.com/alexferl/golib/http/api/server"
 
-	app "github.com/alexferl/echo-boilerplate-templ"
 	"github.com/alexferl/echo-boilerplate-templ/handlers"
+	"github.com/alexferl/echo-boilerplate-templ/server"
 )
 
-func getServer() *server.Server {
+func getServer() *api.Server {
 	h := handlers.NewHandler()
-	s := app.NewTestServer(h)
+	s := server.NewTestServer(h)
 	return s
 }
